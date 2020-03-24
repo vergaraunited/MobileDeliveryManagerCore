@@ -1,12 +1,10 @@
-﻿using MobileDataManager;
-using System;
+﻿using System;
 using UMDGeneral.Interfaces;
-using UMDGeneral.Utilities;
 using MobileDeliveryLogger;
-using System.Configuration;
 using UMDGeneral.Settings;
 using System.Threading;
 using MobileDeliveryServer;
+using System.Threading.Tasks;
 
 namespace MobileDeliveryManager
 {
@@ -19,17 +17,17 @@ namespace MobileDeliveryManager
         {
             var config = WinformReadSettings.GetSettings(typeof(UMDApplicationStartup));
 
-            logger = new Logger(config.AppName, config.LogPath, config.LogLevel);
-            Logger.Info($"Starting {config.AppName} {config.Version} {DateTime.Now}");
+            logger = new Logger(config.AppName + "_" + config.srvSet.port.ToString(), config.LogPath, config.LogLevel);
+            Logger.Info($"Starting {config.AppName} {config.srvSet.port.ToString()} {config.Version} {DateTime.Now}");
             Logger.Info($"Logfile: {config.LogPath}");
 
             Console.CancelKeyPress += (sender, eArgs) => {
                 _quitEvent.Set();
                 eArgs.Cancel = true;
             };
-
             MobileDeliveryManagerAPI det = new MobileDeliveryManagerAPI();
-            det.Init(config);
+            Task.Run(() => { det.Init(config);});
+
             Logger.Info($"Connection details {config.AppName}:/n/tUrl:/t{config.srvSet.url}/n/tPort:/t{config.srvSet.port}");
             Server srv = new Server(config.AppName, config.srvSet.url, config.srvSet.port.ToString());
             ProcessMsgDelegateRXRaw pmRx = new ProcessMsgDelegateRXRaw(det.HandleClientCmd);

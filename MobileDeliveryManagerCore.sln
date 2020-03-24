@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.902
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileDeliveryManagerCore", "MobileDeliveryManagerCore.csproj", "{A3DF7361-377F-458C-8B2C-69B0A72CF174}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A3DF7361-377F-458C-8B2C-69B0A72CF174}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3DF7361-377F-458C-8B2C-69B0A72CF174}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3DF7361-377F-458C-8B2C-69B0A72CF174}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3DF7361-377F-458C-8B2C-69B0A72CF174}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {98B70456-2AC1-489E-9498-511CB85FB159}
+	EndGlobalSection
+EndGlobal

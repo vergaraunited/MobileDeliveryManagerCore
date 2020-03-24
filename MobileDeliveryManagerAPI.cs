@@ -19,24 +19,17 @@ namespace MobileDeliveryManager
 {
     public class MobileDeliveryManagerAPI : isaMDM
     {
-        string srcPath = @"\\Fs01\vol1\Winsys32\DATA";
-        string dstPath;
-
-        WinSysDBFile WinsysTxFiles;
         UMDManifest UMDServer;
         public static string AppName;
         public ProcessMsgDelegateRXRaw pmRx { get; private set; }
-
         ReceiveMsgDelegate rm;
         SendMsgDelegate sm;
         SendMessages WinSysSM;
         UMDServerConnection conn;
         ManifestDetails drillDown;
-        //Logger logger;
 
         public MobileDeliveryManagerAPI()
         {
-           // init(srcPath, dstPath);
         }
 
         public void Init(UMDAppConfig config)
@@ -182,7 +175,7 @@ namespace MobileDeliveryManager
                     cbsend(cmd.ToArray());
                     break;
                 case eCommand.Trucks:
-                    Logger.Info($"HandleClientCmd - ManifestDetails.{bytes_cmd.Length}");
+                    Logger.Info($"HandleClientCmd - Trucks.{bytes_cmd.Length}");
 
                     isaCommand req = new manifestRequest().FromArray(bytes_cmd);
                     TruckData td = (TruckData)UMDServer.QueryData(cbsend, req);

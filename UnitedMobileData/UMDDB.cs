@@ -26,7 +26,9 @@ namespace MobileDataManager.UnitedMobileData
         }
 
         SqlConnection NewConnection() {
+            Logger.Info($"DB SQLConn Str = {connectionString}");
             SqlConnection con = new SqlConnection(connectionString);
+            //con.
             con.Open();
             return con;
         }
@@ -246,7 +248,7 @@ namespace MobileDataManager.UnitedMobileData
                 trk.ShipDate = reader.GetDateTime(reader.GetOrdinal("SHP_DTE")).ToBinary();
                 trk.Description = reader.GetString(reader.GetOrdinal("DESC$"));
                 trk.Notes = reader.GetString(reader.GetOrdinal("NOTES"));
-                Logger.Debug($"Truck: {trk.ManifestId} {trk.LastName} {trk.TruckCode} {trk.Notes}");
+                Logger.Info($"Truck: {trk.ManifestId} {trk.LastName} {trk.TruckCode} {trk.Notes}");
             }
             catch (Exception ex) { }
             return trk;
@@ -274,6 +276,7 @@ namespace MobileDataManager.UnitedMobileData
                 st.TRK_CDE = reader.GetString(reader.GetOrdinal("TRK_CDE"));
                 st.CustomerId = reader.GetInt32(reader.GetOrdinal("CustomerId"));
                 //st.BillComplete = reader.GetBoolean(reader.GetOrdinal("BillComplete"));
+                Logger.Info($"Stop: {st.ManifestId} {st.DisplaySeq} {st.DealerNo} {st.TRK_CDE}");
             }
             catch (Exception ex) { }
             return st;
@@ -422,8 +425,9 @@ namespace MobileDataManager.UnitedMobileData
                         {
                             cnn.Open();
                             reader = adapter.SelectCommand.ExecuteReader();
+                            Logger.Info($"Query Reader field count: {reader.FieldCount}");
                         }
-                        catch (Exception ex) { }
+                        catch (Exception ex) { Logger.Error($"Error Querying SQL Server : {ex.Message}"); }
                         
                         while (reader.Read())
                         {

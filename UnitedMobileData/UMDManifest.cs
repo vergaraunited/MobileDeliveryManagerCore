@@ -1,7 +1,7 @@
 ﻿using MobileDataManager.UnitedMobileData;
+using MobileDeliveryLogger;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UMDGeneral.Data;
 using UMDGeneral.Interfaces;
@@ -46,6 +46,7 @@ namespace MobileDeliveryManager.UnitedMobileData
 
         public UMDManifest()
         {
+            Logger.Info($"UMDManifest::SQLConn: {cnn}");
             UMD_Data = new UMDDB(cnn);
         }
 
