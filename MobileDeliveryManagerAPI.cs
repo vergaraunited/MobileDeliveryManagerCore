@@ -50,7 +50,7 @@ namespace MobileDeliveryManager
             conn = new UMDServerConnection(config.srvSet, ref sm, rm);
             conn.Connect();
 
-            UMDServer = new UMDManifest();
+            UMDServer = new UMDManifest(config.SQLConn);
  
             drillDown = new ManifestDetails(sm, rm, pmRx);
         }

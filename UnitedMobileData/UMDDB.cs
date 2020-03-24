@@ -20,7 +20,7 @@ namespace MobileDataManager.UnitedMobileData
         public SqlConnection cnn { get; private set; }
         public SqlCommand cmd { get; private set; }
 
-        public UMDDB(string strCon=@"Data Source=WIN-50GP30FGO75;Initial Catalog=Demodb;User ID=wtssa;Password=demol23")
+        public UMDDB(string strCon)
         {
             connectionString = strCon;
         }

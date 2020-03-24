@@ -14,9 +14,8 @@ namespace MobileDeliveryManager.UnitedMobileData
 {
     public class UMDManifest {
         static UMDDB UMD_Data;
-        string cnn = @"Data Source=UWD-CPT;Initial Catalog=UWDMobileDelivery;User ID=wtssa;Password=1United$WTS";
+        string cnn;
         DateTime dt;
-
         SendMsgDelegate sm;
         ReceiveMsgDelegate rm;
 
@@ -44,9 +43,10 @@ namespace MobileDeliveryManager.UnitedMobileData
         UMBackgroundWorker<OrderOptionsData>.ProgressChanged<OrderOptionsData> pcOrderOptions;
         #endregion
 
-        public UMDManifest()
+        public UMDManifest(string con)
         {
-            Logger.Info($"UMDManifest::SQLConn: {cnn}");
+            Logger.Info($"UMDManifest::SQLConn: {con}");
+            cnn = con;
             UMD_Data = new UMDDB(cnn);
         }
 
