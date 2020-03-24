@@ -1,0 +1,10 @@
+UpgradeLog*
+packages/
+*.vssscc
+*tf*/
+.vs/
+bin
+obj
+*.vspscc
+*.nupkg
+*.swp

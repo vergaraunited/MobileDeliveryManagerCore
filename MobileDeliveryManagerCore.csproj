@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>MobileDeliveryManager</AssemblyName>
+    <RootNamespace>MobileDeliveryManager</RootNamespace>
+    <Version>2.2.4</Version>
+    <Description>.Net Core Mobile Delivery Manager API</Description>
+    <PackageReleaseNotes>Attempting to fix SQL Server connection.  Using config settings.</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/vergaraunited/mobiledeliverymanager</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/vergaraunited/mobiledeliverymanager</PackageProjectUrl>
+    <PackageIconUrl>https://unitedwindowmfg.com/wp-content/uploads/2017/02/New-Logo-4.png</PackageIconUrl>
+    <RepositoryType>Git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Ed Vergara</Authors>
+    <Company>United Window Manufacturer</Company>
+    <PackageTags>Manager API UMD</PackageTags>
+    <AssemblyVersion>2.2.4.0</AssemblyVersion>
+    <FileVersion>2.2.4.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MobileDeliveryClient" Version="1.1.0" />
+    <PackageReference Include="MobileDeliveryLogger" Version="1.1.1" />
+    <PackageReference Include="MobileDeliveryServer" Version="1.3.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="UMDGeneral" Version="1.2.2" />
+  </ItemGroup>
+
+</Project>

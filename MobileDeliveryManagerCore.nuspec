@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$authors$</authors>
+    <owners>$company$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/vergaraunited/MobileDeliveryManager</projectUrl>
+    <iconUrl>https://unitedwindowmfg.com/wp-content/uploads/2017/02/New-Logo-4.png</iconUrl>
+    <description>$description$</description>
+    <releaseNotes>Nuspec, v2.2 Update Logger fixing Windows.UniversalAPI missing reference.</releaseNotes>
+    <copyright>Copyright 2020</copyright>
+    <tags>UMDManagerCore UMDAPI</tags>
+    <dependencies>
+      <dependency id="System.Data.SqlClient" version="4.8.1" />
+    </dependencies>
+  </metadata>
+</package>
