@@ -78,5 +78,38 @@ MobileDeliverySettings  | 1.0.0     | Mobile Delivery Settings base code for all
 ##### In order access log files and not issue docker commands to enter the interactive shell within the running container, volumes (and mounts) offer the ability to expose and persist across restarts and rebuilds on the localhost's file system.
 
 `docker volume create logs`
+
+#### Create the shared drive to persist the db tables across restarts uninstalls and reinstalls. 
+`docker volume create umd-db`
+
 `docker volume ls`
+
 `docker volume inspect logs`
+ 
+```xml
+[
+    {
+        "CreatedAt": "2020-03-24T23:00:30Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/logs/_data",
+        "Name": "logs",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+
+[
+    {
+        "CreatedAt": "2020-03-25T02:35:44Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/umd-db/_data",
+        "Name": "umd-db",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+
+```
+
