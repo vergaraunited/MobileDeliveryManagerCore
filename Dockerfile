@@ -3,6 +3,11 @@ FROM microsoft/dotnet:2.1-runtime AS base
 WORKDIR /app
 
 FROM microsoft/dotnet:2.1-sdk AS build
+ARG buildno
+ARG gitcommithash
+
+RUN echo "Build number: $buildno"
+RUN echo "Based on commit: $gitcommithash"
 WORKDIR /src
 COPY MobileDeliveryManagerCore.csproj .
 COPY nuget.config .

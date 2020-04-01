@@ -1,0 +1,32 @@
+﻿version: '3.4'
+
+services:
+  mgrapi:
+    image: mgrapidev
+    environment:
+      - Url=localhost
+      - Port=81
+      - LogPath=/app/logs
+      - LogLevel=Info
+      - WinsysUrl = localhost
+      - WinsysPort = 8181
+      - SQLConn = Data Source=WIN-50GP30FGO75,1433;Initial Catalog=Demodb;User ID=wtssa;Password=demol23
+    ports:
+      - "81:81"
+    depends_on:
+      - sqldata
+    network_mode: 
+      - "host"
+    volumes:
+      - log:/app/logs
+    args:
+      buildno: 1
+      gitcommithash: cdc3b19
+ sqldata:
+    environment:
+      - SA_PASSWORD=P@ssword1
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+  volumes:
+    log:
