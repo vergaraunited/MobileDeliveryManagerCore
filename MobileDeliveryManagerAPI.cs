@@ -1,17 +1,17 @@
-﻿using UMDGeneral.DataManager.Interfaces;
+﻿using MobileDeliveryGeneral.DataManager.Interfaces;
 using System;
-using UMDGeneral.Data;
-using static UMDGeneral.Definitions.MsgTypes;
-using UMDGeneral.Interfaces.DataInterfaces;
+using MobileDeliveryGeneral.Data;
+using static MobileDeliveryGeneral.Definitions.MsgTypes;
+using MobileDeliveryGeneral.Interfaces.DataInterfaces;
 using MobileDeliveryManager.UnitedMobileData;
 //using MobileDataManagerWinsys.WinSysInterface;
-using UMDGeneral.Interfaces;
+using MobileDeliveryGeneral.Interfaces;
 using System.Threading.Tasks;
-using static UMDGeneral.Definitions.enums;
+using static MobileDeliveryGeneral.Definitions.enums;
 using System.Collections.Generic;
-using UMDGeneral.Settings;
+using MobileDeliveryGeneral.Settings;
 using MobileDeliveryClient.API;
-using UMDGeneral.Utilities;
+using MobileDeliveryGeneral.Utilities;
 using MobileDeliveryLogger;
 using MobileDeliveryManger.UnitedMobileData;
 

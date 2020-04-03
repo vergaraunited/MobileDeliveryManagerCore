@@ -3,12 +3,12 @@ using MobileDeliveryLogger;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UMDGeneral.Data;
-using UMDGeneral.Interfaces;
-using UMDGeneral.Interfaces.DataInterfaces;
-using UMDGeneral.Threading;
-using static UMDGeneral.Definitions.enums;
-using static UMDGeneral.Definitions.MsgTypes;
+using MobileDeliveryGeneral.Data;
+using MobileDeliveryGeneral.Interfaces;
+using MobileDeliveryGeneral.Interfaces.DataInterfaces;
+using MobileDeliveryGeneral.Threading;
+using static MobileDeliveryGeneral.Definitions.enums;
+using static MobileDeliveryGeneral.Definitions.MsgTypes;
 
 namespace MobileDeliveryManager.UnitedMobileData
 {

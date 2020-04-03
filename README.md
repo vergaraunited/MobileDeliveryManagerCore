@@ -18,7 +18,7 @@
 
 Package Name            | Version   | Description
 --------------------    | -------   | -----------
-UMDGeneral              | 1.1.0     | Mobile Delivery General Code
+MobileDeliveryGeneral              | 1.1.0     | Mobile Delivery General Code
 MobileDeliveryServer    | 1.3.0     | Mobile Delivery Server base code for all servers
 MobilDeliveryClient     | 1.1.0     | Mobile Delivery Client base code for all clients
 MobileDeliveryLogger    | 1.0.0     | Mobile Delivery Logger base code for all components

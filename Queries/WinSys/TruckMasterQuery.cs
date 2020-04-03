@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using UMDGeneral.DataManager.Interfaces;
+using MobileDeliveryGeneral.DataManager.Interfaces;
 
 namespace MobileDataManagerWinsys.Queries
 {

@@ -4,12 +4,12 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using UMDGeneral.Data;
-using UMDGeneral.DataManager.Interfaces;
-using UMDGeneral.Interfaces.DataInterfaces;
-using static UMDGeneral.Definitions.enums;
-using static UMDGeneral.Definitions.MsgTypes;
-using UMDGeneral.ExtMethods;
+using MobileDeliveryGeneral.Data;
+using MobileDeliveryGeneral.DataManager.Interfaces;
+using MobileDeliveryGeneral.Interfaces.DataInterfaces;
+using static MobileDeliveryGeneral.Definitions.enums;
+using static MobileDeliveryGeneral.Definitions.MsgTypes;
+using MobileDeliveryGeneral.ExtMethods;
 using MobileDeliveryLogger;
 
 namespace MobileDataManager.UnitedMobileData

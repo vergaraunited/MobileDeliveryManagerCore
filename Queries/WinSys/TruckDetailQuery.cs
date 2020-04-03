@@ -1,4 +1,4 @@
-﻿using UMDGeneral.DataManager.Interfaces;
+﻿using MobileDeliveryGeneral.DataManager.Interfaces;
 
 namespace MobileDataManagerWinsys.Queries
 {

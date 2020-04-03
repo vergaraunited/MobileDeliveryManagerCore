@@ -1,7 +1,7 @@
 ﻿using System;
-using UMDGeneral.Interfaces;
+using MobileDeliveryGeneral.Interfaces;
 using MobileDeliveryLogger;
-using UMDGeneral.Settings;
+using MobileDeliveryGeneral.Settings;
 using System.Threading;
 using MobileDeliveryServer;
 using System.Threading.Tasks;
