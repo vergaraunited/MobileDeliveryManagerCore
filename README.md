@@ -123,9 +123,9 @@ MobileDeliverySettings  |   1.4.3   |  Mobile Delivery Settings base code for al
 
 
 **ToDo**<br/>
-**_:white_check_mark: Dockerize
+**_:white_check_mark: Dockerize_**
 - **_:x: Build configuration settings into the docker image based on the settings in the app.config_**
-- **_:white_check_mark: Deploy in Docker Container
+- **_:white_check_mark: Deploy in Docker Container_**
   - **_:heavy_check_mark: Create the docker and compose file_**
   - **_:white_check_mark: Build configuration settings into the docker image based on the settings in the app.config_**
   - **_:heavy_exclamation_mark: Finish the SQL Server connection string_**<br/>
