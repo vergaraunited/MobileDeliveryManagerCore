@@ -26,7 +26,7 @@ Package Name            |  Version  |  Description
 MobileDeliveryServer    |   1.4.0   |  Mobile Delivery Server base code for all servers with Symbols
 MobileDeliveryClient    |   1.4.0   |  Mobile Delivery Client base code for all clients with Symbols
 
-Dependencies            |  Client/Server | Thus included in Packages
+SubDependencies         |  Versoin  | Thus included in Packages
 ----------------------  |  -------- |  -------------------------
 MobileDeliveryLogger    |   1.3.0   |  Mobile Delivery Logger base code for all components with Symbols
 MobileDeliveryGeneral   |   1.4.3   |  Mobile Delivery General Code with Symbols
