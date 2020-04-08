@@ -10,19 +10,27 @@
 ```xml
 <configuration>
   <packageSources>
-    <clear />
     <add key="UMDNuget" value="https://pkgs.dev.azure.com/unitedwindowmfg/1e4fcdac-b7c9-4478-823a-109475434848/_packaging/UMDNuget/nuget/v3/index.json" />
   </packageSources>
+  <packageSourceCredentials>
+    <UMDNuget>
+        <add key="Username" value="any" />
+        <add key="ClearTextPassword" value="w75dbjeqggfltkt5m65yf3e33fryf2olu22of55jxj4b3nmfkpaa" />
+      </UMDNuget>
+  </packageSourceCredentials>
 </configuration>
 ```
 
-Package Name            | Version   | Description
---------------------    | -------   | -----------
-MobileDeliveryGeneral   | 1.4.0     | Mobile Delivery General Code with Symbols
-MobileDeliveryServer    | 1.4.0     | Mobile Delivery Server base code for all servers with Symbols
-MobileDeliveryClient     | 1.4.0     | Mobile Delivery Client base code for all clients with Symbols
-MobileDeliveryLogger    | 1.4.0     | Mobile Delivery Logger base code for all components with Symbols
-MobileDeliverySettings  | 1.4.0     | Mobile Delivery Settings base code for all components with Symbols
+Package Name            |  Version  |  Description
+--------------------    |  -------  |  -----------
+MobileDeliveryServer    |   1.4.0   |  Mobile Delivery Server base code for all servers with Symbols
+MobileDeliveryClient    |   1.4.0   |  Mobile Delivery Client base code for all clients with Symbols
+
+SubDependencies         |  Versoin  | Thus included in Packages
+----------------------  |  -------- |  -------------------------
+MobileDeliveryLogger    |   1.3.0   |  Mobile Delivery Logger base code for all components with Symbols
+MobileDeliveryGeneral   |   1.4.3   |  Mobile Delivery General Code with Symbols
+MobileDeliverySettings  |   1.4.3   |  Mobile Delivery Settings base code for all components with Symbols
 
     
 ## Configuration
@@ -112,4 +120,13 @@ MobileDeliverySettings  | 1.4.0     | Mobile Delivery Settings base code for all
 ]
 
 ```
+
+
+**ToDo**<br/>
+**_:white_check_mark: Dockerize_**
+- **_:x: Build configuration settings into the docker image based on the settings in the app.config_**
+- **_:white_check_mark: Deploy in Docker Container_**
+  - **_:heavy_check_mark: Create the docker and compose file_**
+  - **_:white_check_mark: Build configuration settings into the docker image based on the settings in the app.config_**
+  - **_:heavy_exclamation_mark: Finish the SQL Server connection string_**<br/>
 
