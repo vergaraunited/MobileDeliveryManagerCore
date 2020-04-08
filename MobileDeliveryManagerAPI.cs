@@ -69,7 +69,7 @@ namespace MobileDeliveryManager
                 case eCommand.LoadFiles:
                     Logger.Info($"ReceiveMessage - Copy Files from Winsys Server Paths top App Server Paths.  reqId: {cmd.requestId}");
                     //CopyFilesToServer(DateTime.Today);
-                    Logger.Debug($"ReceiveMessage - Replying LoadFilesComplete...");
+                    Logger.Info($"ReceiveMessage - Replying LoadFilesComplete...");
                     WinSysSM.SendMessage(new Command() { command = eCommand.LoadFilesComplete });
                     //cbsend(new Command() { command = eCommand.LoadFilesComplete }.ToArray());
                     break;
@@ -122,7 +122,7 @@ namespace MobileDeliveryManager
                     Logger.Info($"ReceiveMessage - OrderUpdatesComplete reqId: {cmd.requestId}");
                     break;
                 default:
-                    Logger.Debug("ReceiveMessage - ERROR Unknown command.  Parse Error MDM-API");
+                    Logger.Error("ReceiveMessage - ERROR Unknown command.  Parse Error MDM-API");
                     break;
             }
             return cmd;
@@ -183,7 +183,8 @@ namespace MobileDeliveryManager
                     break;
                 case eCommand.ManifestDetails:
                     Logger.Info($"HandleClientCmd - ManifestDetails.{bytes_cmd.Length}");
-                    //isaCommand reqmd = new manifestRequest().FromArray(bytes_cmd);
+                    isaCommand reqmd = new manifestRequest().FromArray(bytes_cmd);
+                   // ManifestDetailsData mdd = 
                     manifestDetails manDet = new manifestDetails();
                     ManifestDetailsData manDetData = (ManifestDetailsData)manDet.FromArray(bytes_cmd);
                     Logger.Info($"HandleClientCmd - ManifestDetails.  reqId: {manDetData.RequestId.ToString()}");
@@ -249,9 +250,7 @@ namespace MobileDeliveryManager
                     //ManifestMasterData Mmd = (ManifestMasterData)cmd;
                     manifestMaster mm = (manifestMaster)new manifestMaster().FromArray(mreq.bData);
                     IEnumerable<IMDMMessage> mmdata = UMDServer.Persist(SPCmds.INSERTMANIFEST, new ManifestMasterData(mm, mm.id));
-
                     Logger.Info($"HandleClientCmd - UploadManifest Persisted. {mm.id}");
-
 
                     try
                     {

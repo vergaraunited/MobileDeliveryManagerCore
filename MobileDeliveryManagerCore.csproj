@@ -21,13 +21,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MobileDeliveryClient" Version="1.4.2" />
-    <PackageReference Include="MobileDeliveryServer" Version="1.4.2" />
+    <PackageReference Include="MobileDeliveryClient" Version="1.4.4" />
+    <PackageReference Include="MobileDeliveryServer" Version="1.4.5" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MobileDeliveryGeneral\MobileDeliveryGeneral.csproj" />
   </ItemGroup>
   
   <ItemGroup>
