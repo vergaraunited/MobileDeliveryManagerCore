@@ -25,7 +25,7 @@ namespace MobileDeliveryManager
         ReceiveMsgDelegate rm;
         SendMsgDelegate sm;
         SendMessages WinSysSM;
-        UMDServerConnection conn;
+        ClientToServerConnection conn;
         ManifestDetails drillDown;
 
         public MobileDeliveryManagerAPI()
@@ -47,7 +47,7 @@ namespace MobileDeliveryManager
 
 
 
-            conn = new UMDServerConnection(config.srvSet, ref sm, rm);
+            conn = new ClientToServerConnection(config.srvSet, ref sm, rm);
             conn.Connect();
 
             UMDServer = new UMDManifest(config.SQLConn);
