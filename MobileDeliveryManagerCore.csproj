@@ -21,9 +21,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MobileDeliveryClient" Version="1.5.3" />
-    <PackageReference Include="MobileDeliveryServer" Version="1.5.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MobileDeliveryClient\MobileDeliveryClient.csproj" />
+    <ProjectReference Include="..\MobileDeliveryGeneral\MobileDeliveryGeneral.csproj" />
+    <ProjectReference Include="..\MobileDeliveryLogger\MobileDeliveryLogger.csproj" />
+    <ProjectReference Include="..\MobileDeliveryServer\MobileDeliveryServer.csproj" />
+    <ProjectReference Include="..\MobileDeliverySettings\MobileDeliverySettings.csproj" />
   </ItemGroup>
   
   <ItemGroup>
@@ -31,9 +37,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="nuget restore $(ProjectPath)" />
-  </Target>
 
 </Project>
