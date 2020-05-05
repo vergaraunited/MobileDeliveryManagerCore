@@ -63,6 +63,7 @@ namespace MobileDeliveryManger.UnitedMobileData
             {
                 command = eCommand.Orders,
                 requestId = mdd.RequestId.ToByteArray(),
+                id=mdd.ManId,
                 valist = new List<long>() { mdd.DLR_NO }
             };
             sm(req);

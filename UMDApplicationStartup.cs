@@ -29,15 +29,12 @@ namespace MobileDeliveryManager
             Task.Run(() => { det.Init(config);});
 
             Logger.Info($"Connection details {config.AppName}:/n/tUrl:/t{config.srvSet.url}/n/tPort:/t{config.srvSet.port}");
-            Server srv = new Server(config.AppName, config.srvSet.url, config.srvSet.port.ToString());
+            Server srv = new Server(config.AppName, config.srvSet.url, config.srvSet.port.ToString(), config.LogLevel);
             ProcessMsgDelegateRXRaw pmRx = new ProcessMsgDelegateRXRaw(det.HandleClientCmd);
             srv.Start(pmRx);
 
-
             // kick off asynchronous stuff 
-
             _quitEvent.WaitOne();
-
             // cleanup/shutdown and quit
         }
     }

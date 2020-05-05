@@ -49,16 +49,6 @@ namespace MobileDeliveryManager.UnitedMobileData
             cnn = con;
             UMD_Data = new UMDDB(cnn);
         }
-
-        //public IEnumerable<IMDMMessage> Persist(SPCmds sp, IMDMMessage md)
-        //{
-        //    // UMD_Data.InsertData(sp, md);
-        //    foreach (var it in UMD_Data.InsertData(sp, md))
-        //    {
-        //        yield return it;
-        //    }
-        //}
-
         public IMDMMessage QueryData(Func<byte[], Task> cb, isaCommand dat)
         {
             return UMD_Data.QueryData(cb, dat);
@@ -66,36 +56,8 @@ namespace MobileDeliveryManager.UnitedMobileData
 
         public IEnumerable<IMDMMessage> Persist(SPCmds sp, IMDMMessage md)
         {
-            // UMD_Data.InsertData(sp, md);
+            Logger.Info($"Persist {md.ToString()}");
             foreach (var it in UMD_Data.InsertData(sp, md))
-            {
-                yield return it;
-            }
-        }
-
-        public IEnumerable<IMDMMessage> UploadManifest(IMDMMessage manItem)
-        {
-            foreach (var it in Persist(SPCmds.INSERTMANIFEST, manItem))
-                yield return it;
-        }
-        public IEnumerable<IMDMMessage> UploadManifestDetails(IMDMMessage manDetItem)
-        {
-            foreach (var it in Persist(SPCmds.INSERTMANIFESTDETAILS, manDetItem))
-                yield return it;
-        }
-        public IEnumerable<IMDMMessage> UploadOrders(IMDMMessage manOrdItem)
-        {
-            foreach (var it in Persist(SPCmds.INSERTORDER, manOrdItem))
-                yield return it;
-        }
-        public IEnumerable<IMDMMessage> UploadOrderDetails(IMDMMessage manOrdDetItem)
-        {
-            foreach (var it in Persist(SPCmds.INSERTORDERDETAILS, manOrdDetItem))
-                yield return it;
-        }
-        public IEnumerable<IMDMMessage> UploadOrderOptions(IMDMMessage manOrdOptItem)
-        {
-            foreach (var it in Persist(SPCmds.INSERTORDEROPTIONS, manOrdOptItem))
                 yield return it;
         }
     }
