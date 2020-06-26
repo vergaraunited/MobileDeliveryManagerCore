@@ -184,6 +184,9 @@ namespace MobileDataManager.UnitedMobileData
                                     command.Parameters.AddWithValue("@CUS_TEL", SqlDbType.VarChar).Value = omd.CUS_TEL;
                                     command.Parameters.AddWithValue("@RTE_CDE", SqlDbType.VarChar).Value = omd.RTE_CDE;
                                     command.Parameters.AddWithValue("@ENT_BY", SqlDbType.VarChar).Value = omd.ENT_BY;
+                                    command.Parameters.AddWithValue("@HLD_FLG", SqlDbType.VarChar).Value = omd.HLD_FLG;
+                                    command.Parameters.AddWithValue("@HLD_BY", SqlDbType.VarChar).Value = omd.HLD_BY;
+                                    command.Parameters.AddWithValue("@HLD_MSG", SqlDbType.VarChar).Value = omd.HLD_MSG;
                                     command.Parameters.AddWithValue("@WIN_QTY", SqlDbType.SmallInt).Value = omd.WIN_QTY;
                                     command.Parameters.AddWithValue("@STK_QTY", SqlDbType.SmallInt).Value = omd.STK_QTY;
                                     command.Parameters.AddWithValue("@CMP_QTY", SqlDbType.SmallInt).Value = omd.CMP_QTY;
@@ -238,7 +241,9 @@ namespace MobileDataManager.UnitedMobileData
                                     command.Parameters.AddWithValue("@OPT_NUM", SqlDbType.SmallInt).Value = odd.OPT_NUM;
                                     command.Parameters.AddWithValue("@OPT_TYPE", SqlDbType.VarChar).Value = odd.OPT_TYPE;
                                     command.Parameters.AddWithValue("@PAT_POS", SqlDbType.TinyInt).Value = odd.PAT_POS;
+                                    //command.Parameters.AddWithValue("@BIN_NO", SqlDbType.SmallInt).Value = odd.BIN_NO;
                                     command.Parameters.AddWithValue("@Status", SqlDbType.TinyInt).Value = odd.Status;
+                                    
                                     adapter.InsertCommand = command;
                                     int cmdcnt = adapter.InsertCommand.ExecuteNonQuery();
                                     yield return odd;
@@ -263,14 +268,14 @@ namespace MobileDataManager.UnitedMobileData
                                     command.Parameters.AddWithValue("@ORD_NO", SqlDbType.Int).Value = oop.ORD_NO;
                                     command.Parameters.AddWithValue("@MDL_CNT", SqlDbType.SmallInt).Value = oop.MDL_CNT;
                                     command.Parameters.AddWithValue("@PAT_POS", SqlDbType.TinyInt).Value = oop.PAT_POS;
-                                    command.Parameters.AddWithValue("@MDL_NO", SqlDbType.VarChar).Value = oop.MDL_NO;
-                                    command.Parameters.AddWithValue("@OPT_TYPE", SqlDbType.VarChar).Value = oop.OPT_TYPE;
+                                    command.Parameters.AddWithValue("@MDL_NO", SqlDbType.VarChar).Value = oop.MDL_NO.ToStringExNull();
+                                    command.Parameters.AddWithValue("@OPT_TYPE", SqlDbType.VarChar).Value = oop.OPT_TYPE.ToStringExNull();
                                     command.Parameters.AddWithValue("@OPT_NUM", SqlDbType.SmallInt).Value = oop.OPT_NUM;
-                                    command.Parameters.AddWithValue("@STOCK_ID", SqlDbType.VarChar).Value = oop.STOCK_ID;
+                                    command.Parameters.AddWithValue("@STOCK_ID", SqlDbType.VarChar).Value = oop.STOCK_ID.ToStringExNull();
                                     //command.Parameters.AddWithValue("@STOCK_CONFIGURATOR", SqlDbType.TinyInt).Value = oop.STOCK_CONFIGURATOR;
-                                    command.Parameters.AddWithValue("@CALL_SIZE", SqlDbType.VarChar).Value = oop.CALL_SIZE;
-                                    command.Parameters.AddWithValue("@CLR", SqlDbType.VarChar).Value = oop.CLR;
-                                    command.Parameters.AddWithValue("@DESC$", SqlDbType.VarChar).Value = oop.DESC;
+                                    command.Parameters.AddWithValue("@CALL_SIZE", SqlDbType.VarChar).Value = oop.CALL_SIZE.ToStringExNull();
+                                    command.Parameters.AddWithValue("@CLR", SqlDbType.VarChar).Value = oop.CLR.ToStringExNull();
+                                    command.Parameters.AddWithValue("@DESC", SqlDbType.VarChar).Value = oop.DESC.ToStringExNull();
                                     command.Parameters.AddWithValue("@QTY", SqlDbType.SmallInt).Value = oop.QTY;
                                     //command.Parameters.AddWithValue("@CMP_QTY", SqlDbType.SmallInt).Value = oop.CMP_QTY;
                                     //command.Parameters.AddWithValue("@INV_QTY", SqlDbType.SmallInt).Value = oop.INV_QTY;
@@ -286,20 +291,20 @@ namespace MobileDataManager.UnitedMobileData
                                     command.Parameters.AddWithValue("@DIS_UNT", SqlDbType.Decimal).Value = oop.DIS_UNT;
                                     command.Parameters.AddWithValue("@NET_AMT", SqlDbType.Decimal).Value = oop.NET_AMT;
                                     //command.Parameters.AddWithValue("@WTY", SqlDbType.VarChar).Value = oop.WTY;
-                                    command.Parameters.AddWithValue("@CMT1", SqlDbType.VarChar).Value = oop.CMT1;
-                                    command.Parameters.AddWithValue("@CMT2", SqlDbType.VarChar).Value = oop.CMT2;
-                                    command.Parameters.AddWithValue("@NOTES", SqlDbType.VarChar).Value = oop.NOTES;
-                                    command.Parameters.AddWithValue("@SHIPPING", SqlDbType.VarChar).Value = oop.SHIPPING;
+                                    command.Parameters.AddWithValue("@CMT1", SqlDbType.VarChar).Value = oop.CMT1.ToStringExNull();
+                                    command.Parameters.AddWithValue("@CMT2", SqlDbType.VarChar).Value = oop.CMT2.ToStringExNull();
+                                    command.Parameters.AddWithValue("@NOTES", SqlDbType.VarChar).Value = oop.NOTES.ToStringExNull();
+                                    command.Parameters.AddWithValue("@SHIPPING", SqlDbType.VarChar).Value = oop.SHIPPING.ToStringExNull();
                                     command.Parameters.AddWithValue("@SHP_DTE", SqlDbType.SmallInt).Value = oop.SHP_DTE;
-                                    command.Parameters.AddWithValue("@TRUCK", SqlDbType.VarChar).Value = oop.TRUCK;
+                                    command.Parameters.AddWithValue("@TRUCK", SqlDbType.VarChar).Value = oop.TRUCK.ToStringExNull();
                                     command.Parameters.AddWithValue("@SHP_SEQUENCE", SqlDbType.SmallInt).Value = oop.SHP_SEQUENCE;
-                                    command.Parameters.AddWithValue("@TYPE", SqlDbType.VarChar).Value = oop.TYPE;
+                                    command.Parameters.AddWithValue("@TYPE", SqlDbType.VarChar).Value = oop.TYPE.ToStringExNull();
                                     //command.Parameters.AddWithValue("@REMAKE", SqlDbType.Int32).Value = omd.REMAKE;
                                     //command.Parameters.AddWithValue("@LINK_ORDER", SqlDbType.Int32).Value = omd.LINK_ORDER;
                                     //command.Parameters.AddWithValue("@LINK_MDL_CNT", SqlDbType.Int16).Value = omd.LINK_MDL_CNT;
                                     //command.Parameters.AddWithValue("@LINK_PAT_POS", SqlDbType.Byte).Value = omd.LINK_PAT_POS;
                                     //command.Parameters.AddWithValue("@LINK_WIN_CNT", SqlDbType.Int16).Value = omd.LINK_WIN_CNT;
-                                    command.Parameters.AddWithValue("@PROD_DESC", SqlDbType.VarChar).Value = oop.PROD_DESC;
+                                    command.Parameters.AddWithValue("@PROD_DESC", SqlDbType.VarChar).Value = oop.PROD_DESC.ToStringExNull();
                                     command.Parameters.AddWithValue("@EXP_SZE", SqlDbType.Decimal).Value = oop.EXP_SZE;
                                     command.Parameters.AddWithValue("@LOT_NO", SqlDbType.Int).Value = oop.LOT_NO;
                                     command.Parameters.AddWithValue("@ORTIDX", SqlDbType.SmallInt).Value = oop.ORTIDX;
@@ -529,43 +534,91 @@ namespace MobileDataManager.UnitedMobileData
         public static isaCommand MyQueryReader_Orders(SqlDataReader reader, Func<byte[], Task> cb)
         {
             orders ordMst = new orders();
+            orderDisplayDetails ordDet = new orderDisplayDetails();
             try
             {
                 ordMst.ORD_NO = reader.GetInt32(reader.GetOrdinal("ORD_NO"));
                 ordMst.DLR_NO = reader.GetInt32(reader.GetOrdinal("DLR_NO"));
-                ordMst.DLR_PO = reader.GetString(reader.GetOrdinal("DLR_PO"));
+                ordMst.DLR_PO = reader.GetString(reader.GetOrdinal("DLR_PO")).ToStringExNull();
                 ordMst.ORD_DTE = reader.GetInt32(reader.GetOrdinal("ORD_DTE"));
                 ordMst.SHIP_DTE = reader.GetInt32(reader.GetOrdinal("SHIP_DTE"));
-                ordMst.CMNT1 = reader.GetString(reader.GetOrdinal("CMNT1"));
-                ordMst.CMNT2 = reader.GetString(reader.GetOrdinal("CMNT2"));
-                ordMst.DLR_NME = reader.GetString(reader.GetOrdinal("DLR_NME"));
-                ordMst.DLR_ADDR = reader.GetString(reader.GetOrdinal("DLR_ADDR"));
-                ordMst.DLR_ADDR2 = reader.GetString(reader.GetOrdinal("DLR_ADDR2"));
-                ordMst.SHP_NME = reader.GetString(reader.GetOrdinal("SHP_NME"));
-                ordMst.SHP_ADDR = reader.GetString(reader.GetOrdinal("SHP_ADDR"));
-                ordMst.SHP_ADDR2 = reader.GetString(reader.GetOrdinal("SHP_ADDR2"));
-                ordMst.SHP_CSZ = reader.GetString(reader.GetOrdinal("SHP_CSZ"));
-                ordMst.SHP_TEL = reader.GetString(reader.GetOrdinal("SHP_TEL"));
+                ordMst.CMNT1 = reader.GetString(reader.GetOrdinal("CMNT1")).ToStringExNull();
+                ordMst.CMNT2 = reader.GetString(reader.GetOrdinal("CMNT2")).ToStringExNull();
+                ordMst.DLR_NME = reader.GetString(reader.GetOrdinal("DLR_NME")).ToStringExNull();
+                ordMst.DLR_ADDR = reader.GetString(reader.GetOrdinal("DLR_ADDR")).ToStringExNull();
+                ordMst.DLR_ADDR2 = reader.GetString(reader.GetOrdinal("DLR_ADDR2")).ToStringExNull();
+                //ordMst.DLR_CSZ = reader.GetString(reader.GetOrdinal("DLR_CSZ"));
+                //ordMst.DLR_CT = reader.GetInt16(reader.GetOrdinal("DLR_CT"));
+                ordMst.SHP_NME = reader.GetString(reader.GetOrdinal("SHP_NME")).ToStringExNull();
+                ordMst.SHP_ADDR = reader.GetString(reader.GetOrdinal("SHP_ADDR")).ToStringExNull();
+                ordMst.SHP_ADDR2 = reader.GetString(reader.GetOrdinal("SHP_ADDR2")).ToStringExNull();
+                ordMst.SHP_CSZ = reader.GetString(reader.GetOrdinal("SHP_CSZ")).ToStringExNull();
+                ordMst.SHP_TEL = reader.GetString(reader.GetOrdinal("SHP_TEL")).ToStringExNull();
                 ordMst.SHP_CT = reader.GetInt16(reader.GetOrdinal("SHP_CT"));
-                ordMst.SHP_ZIP = reader.GetString(reader.GetOrdinal("SHP_ZIP"));
-                ordMst.CUS_NME = reader.GetString(reader.GetOrdinal("CUS_NME"));
-                ordMst.CUS_ADDR = reader.GetString(reader.GetOrdinal("CUS_ADDR"));
-                ordMst.CUS_CSZ = reader.GetString(reader.GetOrdinal("CUS_CSZ"));
-                ordMst.CUS_TEL = reader.GetString(reader.GetOrdinal("CUS_TEL"));
-                ordMst.RTE_CDE = reader.GetString(reader.GetOrdinal("RTE_CDE"));
+                ordMst.SHP_ZIP = reader.GetString(reader.GetOrdinal("SHP_ZIP")).ToStringExNull();
+                ordMst.CUS_NME = reader.GetString(reader.GetOrdinal("CUS_NME")).ToStringExNull();
+                ordMst.CUS_ADDR = reader.GetString(reader.GetOrdinal("CUS_ADDR")).ToStringExNull();
+                ordMst.CUS_CSZ = reader.GetString(reader.GetOrdinal("CUS_CSZ")).ToStringExNull();
+                ordMst.CUS_TEL = reader.GetString(reader.GetOrdinal("CUS_TEL")).ToStringExNull();
+                ordMst.RTE_CDE = reader.GetString(reader.GetOrdinal("RTE_CDE")).ToStringExNull();
                 //ordMst.ORD_TYPE = reader.GetString(reader.GetOrdinal("ORD_TYPE"));
                 //ordMst.DEPOSIT = reader.GetDecimal(reader.GetOrdinal("DEPOSIT"));
-                ordMst.ENT_BY = reader.GetString(reader.GetOrdinal("ENT_BY"));;
+                ordMst.ENT_BY = reader.GetString(reader.GetOrdinal("ENT_BY")).ToStringExNull();
 
+                ordMst.HLD_FLG = reader.GetString(reader.GetOrdinal("HLD_FLG"));
+                ordMst.HLD_BY = reader.GetString(reader.GetOrdinal("HLD_BY"));
+                ordMst.HLD_MSG = reader.GetString(reader.GetOrdinal("HLD_MSG"));
+
+                //ordMst.ORD_AMT = reader.GetDecimal(reader.GetOrdinal("ORD_AMT"));
                 //ordMst.ORD_AMT = reader.GetDecimal(reader.GetOrdinal("ORD_AMT"));
                 ordMst.WIN_QTY = reader.GetInt16(reader.GetOrdinal("WIN_QTY"));
                 //ordMst.PAR_QTY = reader.GetInt16(reader.GetOrdinal("PAR_QTY"));
                 ordMst.STK_QTY = reader.GetInt16(reader.GetOrdinal("STK_QTY"));
-                ordMst.CMP_QTY = reader.GetInt16(reader.GetOrdinal("CMP_QTY"));
-                ordMst.SHP_QTY = reader.GetInt16(reader.GetOrdinal("SHP_QTY"));
-                ordMst.SHP_AMT = reader.GetDecimal(reader.GetOrdinal("SHP_AMT"));
-                ordMst.MISC_TEXT = reader.GetString(reader.GetOrdinal("MISC_TEXT"));
-                ordMst.Status = reader.GetByte(reader.GetOrdinal("Status"));
+
+                if (!reader.IsDBNull(reader.GetOrdinal("CMP_QTY")))
+                    ordMst.CMP_QTY = reader.GetInt16(reader.GetOrdinal("CMP_QTY"));
+
+                if (!reader.IsDBNull(reader.GetOrdinal("SHP_QTY")))
+                    ordMst.SHP_QTY = reader.GetInt16(reader.GetOrdinal("SHP_QTY"));
+
+                if (!reader.IsDBNull(reader.GetOrdinal("SHP_AMT")))
+                    ordMst.SHP_AMT = reader.GetDecimal(reader.GetOrdinal("SHP_AMT"));
+
+                if (!reader.IsDBNull(reader.GetOrdinal("MISC_TEXT")))
+                    ordMst.MISC_TEXT = reader.GetString(reader.GetOrdinal("MISC_TEXT")).ToStringExNull();
+
+                if (!reader.IsDBNull(reader.GetOrdinal("Status")))
+                    ordMst.Status = reader.GetByte(reader.GetOrdinal("Status"));
+
+                //Order Detail
+                if (!reader.IsDBNull(reader.GetOrdinal("BIN_NO")))
+                    ordDet.BIN_NO = reader.GetInt16(reader.GetOrdinal("BIN_NO"));
+
+                if (!reader.IsDBNull(reader.GetOrdinal("WIDTH")))
+                    ordDet.WIDTH = reader.GetDecimal(reader.GetOrdinal("WIDTH"));
+
+                if (!reader.IsDBNull(reader.GetOrdinal("HEIGHT")))
+                    ordDet.HEIGHT = reader.GetDecimal(reader.GetOrdinal("HEIGHT"));
+
+                ordDet.ORD_NO = ordMst.ORD_NO;
+
+                if (!reader.IsDBNull(reader.GetOrdinal("MDL_CNT")))
+                    ordDet.MDL_CNT = reader.GetInt16(reader.GetOrdinal("MDL_CNT"));
+
+                if (!reader.IsDBNull(reader.GetOrdinal("MDL_NO")))
+                    ordDet.MDL_NO = reader.GetString(reader.GetOrdinal("MDL_NO"));
+
+                if (!reader.IsDBNull(reader.GetOrdinal("OPT_TYPE")))
+                    ordDet.OPT_TYPE = reader.GetString(reader.GetOrdinal("OPT_TYPE"));
+
+                if (!reader.IsDBNull(reader.GetOrdinal("OPT_NUM")))
+                    ordDet.OPT_NUM = reader.GetInt16(reader.GetOrdinal("OPT_NUM"));
+
+                if (reader.IsDBNull(reader.GetOrdinal("PAT_POS")))
+                    ordDet.PAT_POS = reader.GetByte(reader.GetOrdinal("PAT_POS"));
+                //ordDet.ScanTime = ExtensionMethods.FromJulianToGregorianDT(reader.GetInt32(reader.GetOrdinal("DTEADDED")), "yyyy-MM-dd");
+
+                ordMst.ordDetails = ordDet;
             }
             catch (Exception ex) { Logger.Error($"MyQueryReader_Orders: {ex.Message} {ordMst.ToString()}"); }
             return ordMst;
@@ -579,10 +632,10 @@ namespace MobileDataManager.UnitedMobileData
                 od.ORD_NO = reader.GetInt32(reader.GetOrdinal("ORD_NO"));
                 od.MDL_CNT = reader.GetInt16(reader.GetOrdinal("MDL_CNT"));
                 od.MDL_NO = reader.GetString(reader.GetOrdinal("MDL_NO"));
-                od.CLR = reader.GetString(reader.GetOrdinal("CLR"));
-                od.DESC = reader.GetString(reader.GetOrdinal("DESC$"));
+                od.CLR = reader.GetString(reader.GetOrdinal("CLR")).ToStringExNull();
+                od.DESC = reader.GetString(reader.GetOrdinal("DESC$")).ToStringExNull();
                 od.PAT_POS = reader.GetInt16(reader.GetOrdinal("PAT_POS"));
-                od.OPT_TYPE = reader.GetString(reader.GetOrdinal("OPT_TYPE"));
+                od.OPT_TYPE = reader.GetString(reader.GetOrdinal("OPT_TYPE")).ToStringExNull();
                 od.OPT_NUM = reader.GetInt16(reader.GetOrdinal("OPT_NUM"));
                 int idx = reader.GetOrdinal("ScanDateTime");
                 if (!reader.IsDBNull(idx))
@@ -602,16 +655,16 @@ namespace MobileDataManager.UnitedMobileData
                 oo.ORD_NO = reader.GetInt32(reader.GetOrdinal("ORD_NO"));
                 oo.MDL_CNT = reader.GetInt16(reader.GetOrdinal("MDL_CNT"));
                 oo.PAT_POS = reader.GetByte(reader.GetOrdinal("PAT_POS"));
-                oo.MODEL = reader.GetString(reader.GetOrdinal("MODEL"));
-                oo.MDL_NO = reader.GetString(reader.GetOrdinal("MDL_NO"));
-                oo.OPT_TYPE = reader.GetString(reader.GetOrdinal("OPT_TYPE"));
+                //oo.MODEL = reader.GetString(reader.GetOrdinal("MODEL")).ToStringExNull();
+                oo.MDL_NO = reader.GetString(reader.GetOrdinal("MDL_NO")).ToStringExNull();
+                oo.OPT_TYPE = reader.GetString(reader.GetOrdinal("OPT_TYPE")).ToStringExNull();
                 oo.OPT_NUM = reader.GetInt16(reader.GetOrdinal("OPT_NUM"));
-                oo.STOCK_ID = reader.GetString(reader.GetOrdinal("STOCK_ID"));
-                oo.CALL_SIZE = reader.GetString(reader.GetOrdinal("CALL_SIZE"));
-                oo.CLR = reader.GetString(reader.GetOrdinal("CLR"));
-                oo.DESC = reader.GetString(reader.GetOrdinal("DESC$"));
+                oo.STOCK_ID = reader.GetString(reader.GetOrdinal("STOCK_ID")).ToStringExNull();
+                oo.CALL_SIZE = reader.GetString(reader.GetOrdinal("CALL_SIZE")).ToStringExNull();
+                oo.CLR = reader.GetString(reader.GetOrdinal("CLR")).ToStringExNull();
+                oo.DESC = reader.GetString(reader.GetOrdinal("DESC$")).ToStringExNull();
                 oo.QTY = reader.GetInt16(reader.GetOrdinal("QTY"));
-                oo.CMP_QTY = reader.GetInt16(reader.GetOrdinal("CMP_QTY"));
+                //oo.CMP_QTY = reader.GetInt16(reader.GetOrdinal("CMP_QTY"));
                 oo.PAT_ID = reader.GetInt16(reader.GetOrdinal("PAT_ID"));
                 oo.WIDTH = reader.GetDecimal(reader.GetOrdinal("WIDTH"));
                 oo.HEIGHT = reader.GetDecimal(reader.GetOrdinal("HEIGHT"));
@@ -621,16 +674,16 @@ namespace MobileDataManager.UnitedMobileData
                 oo.DIS_AMT = reader.GetDecimal(reader.GetOrdinal("DIS_AMT"));
                 oo.DIS_UNT = reader.GetDecimal(reader.GetOrdinal("DIS_UNT"));
                 oo.NET_AMT = reader.GetDecimal(reader.GetOrdinal("NET_AMT"));
-                oo.CMT1 = reader.GetString(reader.GetOrdinal("CMT1"));
-                oo.CMT2 = reader.GetString(reader.GetOrdinal("CMT2"));
-                oo.NOTES = reader.GetString(reader.GetOrdinal("NOTES"));
-                oo.SHIPPING = reader.GetString(reader.GetOrdinal("SHIPPING"));
+                oo.CMT1 = reader.GetString(reader.GetOrdinal("CMT1")).ToStringExNull();
+                oo.CMT2 = reader.GetString(reader.GetOrdinal("CMT2")).ToStringExNull();
+                oo.NOTES = reader.GetString(reader.GetOrdinal("NOTES")).ToStringExNull();
+                oo.SHIPPING = reader.GetString(reader.GetOrdinal("SHIPPING")).ToStringExNull();
                 oo.SHP_DTE = reader.GetInt32(reader.GetOrdinal("SHP_DTE"));
-                oo.TRUCK = reader.GetString(reader.GetOrdinal("TRUCK"));
+                oo.TRUCK = reader.GetString(reader.GetOrdinal("TRUCK")).ToStringExNull();
                 oo.SHP_SEQUENCE = reader.GetInt16(reader.GetOrdinal("SHP_SEQUENCE"));
-                oo.TYPE = reader.GetString(reader.GetOrdinal("TYPE"));
+                oo.TYPE = reader.GetString(reader.GetOrdinal("TYPE")).ToStringExNull();
                 
-                oo.PROD_DESC = reader.GetString(reader.GetOrdinal("PROD_DESC"));
+                oo.PROD_DESC = reader.GetString(reader.GetOrdinal("PROD_DESC")).ToStringExNull();
                 oo.EXP_SZE = reader.GetDecimal(reader.GetOrdinal("EXP_SZE"));
                 oo.LOT_NO = reader.GetInt32(reader.GetOrdinal("LOT_NO"));
                 oo.ORTIDX = reader.GetInt16(reader.GetOrdinal("ORTIDX"));
@@ -642,14 +695,7 @@ namespace MobileDataManager.UnitedMobileData
                 oo.EMAILED = reader.GetByte(reader.GetOrdinal("EMAILED"));
                 oo.ADD_DAYS = reader.GetInt16(reader.GetOrdinal("ADD_DAYS"));
                 oo.DTE_ADDED = reader.GetInt32(reader.GetOrdinal("DTE_ADDED"));
-                oo.requestId = Guid.Empty.ToByteArray();
-                oo.ORD_NO = reader.GetInt32(reader.GetOrdinal("ORD_NO"));
-                oo.MDL_CNT = reader.GetInt16(reader.GetOrdinal("MDL_CNT"));
-                oo.MDL_NO = reader.GetString(reader.GetOrdinal("MDL_NO"));
-                oo.CLR = reader.GetString(reader.GetOrdinal("CLR"));
-                oo.DESC = reader.GetString(reader.GetOrdinal("DESC$"));
-                oo.WIDTH = reader.GetDecimal(reader.GetOrdinal("WIDTH"));
-                oo.HEIGHT = reader.GetDecimal(reader.GetOrdinal("HEIGHT"));
+                
                 //int idx = reader.GetOrdinal("ScanDateTime");
                 //if (!reader.IsDBNull(idx))
                 //    oo.ScanTime = reader.GetDateTime(idx);
@@ -752,6 +798,7 @@ namespace MobileDataManager.UnitedMobileData
                     break;
                 case eCommand.OrdersUpload:
                 case eCommand.OrdersLoad:
+                case eCommand.ScanFile:
                     SP = SPCmds.GETORDERS;
                     break;
                 case eCommand.OrderDetails:
@@ -817,12 +864,18 @@ namespace MobileDataManager.UnitedMobileData
                                 break;
 
                             case eCommand.OrdersLoad:
+                            case eCommand.ScanFile:
                                 req = (manifestRequest)dat;
                                 command.Parameters.AddWithValue("@ManifestId", SqlDbType.Int).Value = req.id;
                                 command.Parameters.AddWithValue("@Stop", SqlDbType.Int).Value = req.Stop;
-                                dat.command = eCommand.OrdersLoadComplete;
-                                Logger.Info($"QueryData Orders. {req.ToString()}");
-                                retVal = new OrderData() { RequestId = NewGuid(req.requestId) };
+
+                                if (req.command==eCommand.OrdersLoad)
+                                    dat.command = eCommand.OrdersLoadComplete;
+                                else
+                                    dat.command = eCommand.ScanFileComplete;
+
+                                Logger.Info($"QueryData {Enum.GetName(typeof(eCommand), dat.command)}. {req.ToString()}");
+                                retVal = new OrderMasterData() { RequestId = NewGuid(req.requestId) };
                                 break;
                             case eCommand.OrderDetails:
                                 req = (manifestRequest)dat;
@@ -919,10 +972,16 @@ namespace MobileDataManager.UnitedMobileData
                                     break;
 
                                 case eCommand.OrdersLoad:
+                                case eCommand.ScanFile:
                                     var olcmd = (orders)MyQueryReader_Orders(reader, cb);
                                     olcmd.requestId = dat.requestId;
-                                    olcmd.command = eCommand.OrdersLoad;
-                                    Logger.Info($"QueryData OrdersLoad. {olcmd.ToString()}");
+
+                                    if (olcmd.command == eCommand.OrdersLoad)
+                                        olcmd.command = eCommand.OrdersLoad;
+                                    else
+                                        olcmd.command = eCommand.ScanFile;
+                                    olcmd.ManifestId = ((manifestRequest)dat).id;
+                                        Logger.Info($"QueryData OrdersLoad. {olcmd.ToString()}");
                                     cb(olcmd.ToArray());
                                     break;
 
@@ -935,7 +994,7 @@ namespace MobileDataManager.UnitedMobileData
                                     break;
 
                                 case eCommand.OrderOptions:
-                                    var oocmd = (orderDetails)MyQueryReader_OrderOptions(reader, cb);
+                                    var oocmd = (orderOptions)MyQueryReader_OrderOptions(reader, cb);
                                     oocmd.requestId = dat.requestId;
                                     oocmd.command = eCommand.OrderOptions;
                                     Logger.Info($"QueryData OrderOptions. {oocmd.ToString()}");

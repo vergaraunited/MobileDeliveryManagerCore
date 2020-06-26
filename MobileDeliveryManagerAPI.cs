@@ -14,6 +14,8 @@ using MobileDeliveryGeneral.Utilities;
 using MobileDeliveryLogger;
 using MobileDeliveryManger.UnitedMobileData;
 using System.Linq;
+using MobileDeliverySettings.Settings;
+using MobileDeliveryGeneral.ExtMethods;
 
 namespace MobileDeliveryManager
 {
@@ -24,17 +26,18 @@ namespace MobileDeliveryManager
         public ProcessMsgDelegateRXRaw pmRx { get; private set; }
         ReceiveMsgDelegate rm;
         SendMsgDelegate sm;
-        SendMessages WinSysSM;
         ClientToServerConnection conn;
         ManifestDetails drillDown;
         Dictionary<string, List<ManifestDetailsData>> dManDetails = new Dictionary<string, List<ManifestDetailsData>>();
         Dictionary<string, List<OrderMasterData>> dOrdersMaster = new Dictionary<string, List<OrderMasterData>>();
+        Dictionary<string, List<OrderModelData>> dOrdersModel = new Dictionary<string, List<OrderModelData>>();
         Dictionary<Guid, List<OrderDetailsData>> dOrdersDetails = new Dictionary<Guid, List<OrderDetailsData>>();
         object dOrdLock = new object();
+
         public MobileDeliveryManagerAPI()
         {}
 
-        public void Init(UMDAppConfig config)
+        public void Init(UMDAppConfig config, ev_name_hook ev)
         {
             rm = new ReceiveMsgDelegate(ReceiveMessage);
             pmRx = new ProcessMsgDelegateRXRaw(HandleClientCmd);
@@ -47,12 +50,19 @@ namespace MobileDeliveryManager
                 throw new Exception($"{config.AppName} Missing Configuration Server Settings.");
             }
 
-            conn = new ClientToServerConnection(config.srvSet, ref sm, rm);
+            //Connecting to the WinsysAPI
+            config.srvSet.url = config.srvSet.clienturl;
+            config.srvSet.port = config.srvSet.clientport;
+            config.srvSet.name += " as a client To WinSys server.";
+            conn = new ClientToServerConnection(config.srvSet, ref sm, rm, ev);
             conn.Connect();
+            //AppName = config.AppName + "_" + conn.name;
 
             UMDServer = new UMDManifest(config.SQLConn);
- 
+            //WinSysSM = new SendMessages(sm);
             drillDown = new ManifestDetails(sm, rm, pmRx);
+
+            Console.Title = $"{AppName}";
         }
 
         Dictionary<Guid, Func<byte[], Task>> dRetCall = new Dictionary<Guid, Func<byte[], Task>>();
@@ -62,7 +72,7 @@ namespace MobileDeliveryManager
             {
                 case eCommand.Ping:
                     Logger.Debug($"ReceiveMessage - Received Ping / Replying Pong..");
-                    WinSysSM.SendMessage(new Command() { command = eCommand.Pong });
+                    sm(new Command() { command = eCommand.Pong });
                     break;
                 case eCommand.Pong:
                     Logger.Debug($"ReceiveMessage - Received Pong");
@@ -71,13 +81,31 @@ namespace MobileDeliveryManager
                     Logger.Info($"ReceiveMessage - Copy Files from Winsys Server Paths top App Server Paths:{cmd.ToString()}");
                     //CopyFilesToServer(DateTime.Today);
                     Logger.Info($"ReceiveMessage - Replying LoadFilesComplete...");
-                    WinSysSM.SendMessage(new Command() { command = eCommand.LoadFilesComplete });
+                    sm(new Command() { command = eCommand.LoadFilesComplete });
                     //cbsend(new Command() { command = eCommand.LoadFilesComplete }.ToArray());
                     break;
                 case eCommand.GenerateManifest:
                     Logger.Info($"ReceiveMessage - Generate Manifest from Winsys and SqlServer:{cmd.ToString()}");
                     manifestRequest req = (manifestRequest)cmd;
-                    WinSysSM.SendMessage(req);
+                    sm(req);
+                    break;
+                case eCommand.Manifest:
+                    Logger.Info($"ReceiveMessage - Manifest from Winsys: {cmd.ToString()}");
+                    manifestMaster manMst = (manifestMaster)cmd;
+
+                    ManifestMasterData manMsData = new ManifestMasterData(manMst,manMst.id);
+                    Logger.Info($"Get Manifest (Query Wimsys, Forward result to requesting client): {manMsData.ToString()}");
+                    dRetCall[NewGuid(cmd.requestId)](manMst.ToArray());
+
+                    Logger.Info($"Manifest Load Complete: {manMst.ToString()}");
+                    break;
+                case eCommand.ManifestLoadComplete:
+                    Logger.Info($"ReceiveMessage - OrdersLoadComplete:{cmd.ToString()}");
+                    Logger.Info($"ReceiveMessage - OrderDetailsComplete:{cmd.ToString()}");
+
+                    req = (manifestRequest)cmd;
+                    dRetCall[NewGuid(cmd.requestId)](req.ToArray());
+                    //sm(req);
                     break;
                 case eCommand.ManifestDetails:
                     Logger.Info($"ReceiveMessage - Generate Manifest Details from Winsys - API Drill Down:{cmd.ToString()}");
@@ -114,7 +142,7 @@ namespace MobileDeliveryManager
                     Logger.Info($"ReceiveMessage - Orders  reqId: {cmd.requestId}");
                     List<IMDMMessage> lstOrd = new List<IMDMMessage>();
 
-                    OrderMasterData omd = new OrderMasterData(((orderMaster)cmd));
+                    var omd = new OrderMasterData((orders)cmd);
                     orderMaster om = new orderMaster(omd);
                     //omd.Status = OrderStatus.Shipped;
 
@@ -129,24 +157,81 @@ namespace MobileDeliveryManager
                                 dOrdersMaster[omd.RequestId.ToString() + omd.ManId.ToString()].Add((OrderMasterData)omdit);
 
                     break;
+                case eCommand.OrderModel:
+                    Logger.Info($"ReceiveMessage - OrderModel  reqId: {cmd.requestId}");
+                    orders ords = (orders)cmd;
+                    OrderModelData omda = new OrderModelData(ords);
+
+                    lock (dOrdLock)
+                    {
+                        if (!dOrdersModel.ContainsKey(NewGuid(ords.requestId).ToString() + ords.ManifestId.ToString()))
+                            dOrdersModel.Add(NewGuid(ords.requestId).ToString() + ords.ManifestId.ToString(), new List<OrderModelData>());
+                    }
+                    if (!dOrdersModel[omda.RequestId.ToString() + ords.ManifestId.ToString()].Contains(omda))
+                    {
+                        foreach (var omdit in UMDServer.Persist(SPCmds.INSERTORDER, omda))
+                        {
+                            lock (dOrdLock)
+                                dOrdersModel[omda.RequestId.ToString() + ords.ManifestId.ToString()].Add((OrderModelData)omdit);
+                        }
+                    }
+                    dRetCall[NewGuid(cmd.requestId)](ords.ToArray());
+                    break;
+                    
                 case eCommand.OrdersLoad:
                     Logger.Info($"ReceiveMessage - OrdersLoad  reqId: {cmd.requestId}");
-                    orderMaster ord = (orderMaster)cmd;
+                    var ord = (orders)cmd;
                     OrderMasterData omdata = new OrderMasterData(ord);
                     
                     lock (dOrdLock)
                     {
-                        if (!dOrdersMaster.ContainsKey(NewGuid(ord.requestId).ToString() + ord.ManId.ToString()))
-                            dOrdersMaster.Add(NewGuid(ord.requestId).ToString() + ord.ManId.ToString(), new List<OrderMasterData>());
+                        if (!dOrdersMaster.ContainsKey(NewGuid(ord.requestId).ToString() + ord.ManifestId.ToString()))
+                            dOrdersMaster.Add(NewGuid(ord.requestId).ToString() + ord.ManifestId.ToString(), new List<OrderMasterData>());
                     }
-                    if (!dOrdersMaster[omdata.RequestId.ToString() + omdata.ManId.ToString()].Contains(omdata))
+                    if (!dOrdersMaster[omdata.RequestId.ToString() + ord.ManifestId.ToString()].Contains(omdata))
                     {
                         foreach (var omdit in UMDServer.Persist(SPCmds.INSERTORDER, omdata))
                         {
                             lock (dOrdLock)
-                                dOrdersMaster[omdata.RequestId.ToString() + omdata.ManId.ToString()].Add((OrderMasterData)omdit);
+                                dOrdersMaster[omdata.RequestId.ToString() + ord.ManifestId.ToString()].Add((OrderMasterData)omdit);
                         }
                     }
+                    dRetCall[NewGuid(cmd.requestId)](ord.ToArray());
+                    break;
+                case eCommand.OrderModelLoadComplete:
+                    Logger.Info($"ReceiveMessage - OrderModelLoadComplete: {cmd.ToString()}");
+                    req = (manifestRequest)cmd;
+
+                    if (dOrdersModel.ContainsKey(NewGuid(cmd.requestId).ToString() + req.id))
+                    {
+                        var dt = dOrdersModel.FirstOrDefault().Value[0].SHP_DTE;
+                        var dts = dOrdersModel.Select(sd => sd.Value.Select(v => v.SHP_DTE));
+                        foreach (var itm in dts)
+                            Logger.Debug($"{itm}");
+                        List<OrderModelData> lMOrd = dOrdersModel[NewGuid(cmd.requestId).ToString() + req.id.ToString()].Distinct().ToList();
+                        req.valist = new List<long>();
+                        req.valist.AddRange(lMOrd.Select(o => (long)o.ORD_NO).ToList());
+                        lMOrd.ForEach(x => Logger.Info($"ordldcmp{x.ORD_NO}"));
+                        drillDown.GetDrillDownData(req.valist, eCommand.OrderDetails, req.requestId, 1);
+                        drillDown.GetDrillDownData(req.valist, eCommand.OrderOptions, req.requestId);
+                        drillDown.GetDrillDownData(req.valist, new manifestRequest()
+                        {
+                            command = eCommand.ScanFile,
+                            requestId = req.requestId,
+                            id = req.id,
+                            valist = req.valist
+                        }, 3);
+                        drillDown.GetDrillDownData(req.valist, eCommand.ScanFile, req.requestId, 3);
+                        
+                        lock (dOrdLock)
+                            dOrdersModel.Remove(NewGuid(cmd.requestId).ToString() + req.id);
+                    }
+                    else
+                        Logger.Info($"No Orders for {cmd.ToString()}");
+                    //                        throw new Exception("OrdersLoadComplete - response not mapped in dOrderMaster.  " +
+                    //                          "Request Id: {NewGuid(cmd.requestId).ToString()} , id: {req.id}. ");
+                    if (dRetCall.ContainsKey(NewGuid(cmd.requestId)))
+                        dRetCall[NewGuid(cmd.requestId)](req.ToArray());
 
                     break;
                 case eCommand.OrdersLoadComplete:
@@ -155,18 +240,34 @@ namespace MobileDeliveryManager
 
                     if (dOrdersMaster.ContainsKey(NewGuid(cmd.requestId).ToString() + req.id))
                     {
+                        var dt = dOrdersMaster.FirstOrDefault().Value[0].SHP_DTE;
+                        var dts = dOrdersMaster.Select(sd => sd.Value.Select(v => v.SHP_DTE));
+                        foreach (var itm in dts)
+                            Logger.Debug($"{itm}");
                         List<OrderMasterData> lMOrd = dOrdersMaster[NewGuid(cmd.requestId).ToString() + req.id.ToString()].Distinct().ToList();
+                        req.valist = new List<long>();
+                        req.valist.AddRange(lMOrd.Select(o => (long)o.ORD_NO).ToList());
                         lMOrd.ForEach(x => Logger.Info($"ordldcmp{x.ORD_NO}"));
                         drillDown.GetDrillDownData(req.valist, eCommand.OrderDetails, req.requestId, 1);
                         drillDown.GetDrillDownData(req.valist, eCommand.OrderOptions, req.requestId);
+                        drillDown.GetDrillDownData(req.valist, new manifestRequest()
+                        {
+                            command = eCommand.ScanFile,
+                            requestId = req.requestId,
+                            id = req.id,
+                            valist = req.valist
+                        }, 3);
+                        //drillDown.GetDrillDownData(req.valist, eCommand.ScanFile, req.requestId, 3);
+                        //drillDown.GetDrillDownScanFile( new ManifestMasterData() { RequestId = NewGuid(req.requestId), SHIP_DTE = ExtensionMethods.FromJulianToGregorianDT(dt, "yyyy-MM-dd").Date });
                         lock (dOrdLock)
                             dOrdersMaster.Remove(NewGuid(cmd.requestId).ToString() + req.id);
                     }
                     else
                         Logger.Info($"No Orders for {cmd.ToString()}");
-//                        throw new Exception("OrdersLoadComplete - response not mapped in dOrderMaster.  " +
-  //                          "Request Id: {NewGuid(cmd.requestId).ToString()} , id: {req.id}. ");
-                    dRetCall[NewGuid(cmd.requestId)](req.ToArray());
+                    //                        throw new Exception("OrdersLoadComplete - response not mapped in dOrderMaster.  " +
+                    //                          "Request Id: {NewGuid(cmd.requestId).ToString()} , id: {req.id}. ");
+                    if (dRetCall.ContainsKey(NewGuid(cmd.requestId)))
+                        dRetCall[NewGuid(cmd.requestId)](req.ToArray());
 
                     break;     
                     
@@ -246,10 +347,8 @@ namespace MobileDeliveryManager
                     req = (manifestRequest)cmd;
                     dRetCall[NewGuid(cmd.requestId)](req.ToArray());
                     break;
-                
-                case eCommand.ManifestLoadComplete:
-                    Logger.Info($"ReceiveMessage - OrdersLoadComplete:{cmd.ToString()}");
-                    Logger.Info($"ReceiveMessage - OrderDetailsComplete:{cmd.ToString()}");
+                case eCommand.StopsLoadComplete:
+                    Logger.Info($"ReceiveMessage - StopsLoadComplete:{cmd.ToString()}");
 
                     req = (manifestRequest)cmd;
                     dRetCall[NewGuid(cmd.requestId)](req.ToArray());
@@ -259,18 +358,28 @@ namespace MobileDeliveryManager
                     Logger.Info($"ReceiveMessage Cached Success - ScanFile:{cmd.ToString()}");
                     scanFile sf = (scanFile)cmd;
                     ScanFileData sfd = new ScanFileData(sf);
-                    
+
                     foreach (var scnfle in UMDServer.Persist(SPCmds.INSERTSCANFILE, sfd))
                         Logger.Info($"INSERTSCNFLE Complete: {scnfle.ToString()}");
-                    
+
+                    dRetCall[NewGuid(cmd.requestId)](sf.ToArray());
+
                     //if(cmd.requestId==null)
                     //    dRetCall.FirstOrDefault().Value(sf.ToArray());
                     //else
                     //    dRetCall[NewGuid(cmd.requestId)](sf.ToArray());
 
                     break;
+
+                case eCommand.ScanFileComplete:
+                    Logger.Info($"ReceiveMessage - ScanFileComplete:{cmd.ToString()}");
+
+                    req = (manifestRequest)cmd;
+                    dRetCall[NewGuid(cmd.requestId)](req.ToArray());
+                    break;
+
                 default:
-                    Logger.Error("ReceiveMessage - ERROR Unknown command.  Parse Error MDM-API");
+                    Logger.Error($"ReceiveMessage - ERROR Unknown command.  Parse Error MDM-API {cmd.command}");
                     break;
             }
             return cmd;
@@ -300,7 +409,10 @@ namespace MobileDeliveryManager
                         Logger.Info($"API Manager GenerateManifest QueryData Complete. {mmd1.ToString()}");
                     }
                     else
-                        WinSysSM.SendMessage(cmd);
+                    {
+                        dRetCall.Add(NewGuid(mM.requestId), cbsend);
+                        sm(mM);
+                    }
 
                     break;
 
@@ -401,7 +513,7 @@ namespace MobileDeliveryManager
 
                     OrderOptionsData ood = (OrderOptionsData)UMDServer.QueryData(cbsend, mreqoo);
                     Logger.Info($"API Manager QueryData OrderOptionsData. {ood.ToString()}");
-
+                    cbsend(cmd.ToArray());
                     break;
 
                 case eCommand.OrderDetails:
@@ -411,6 +523,13 @@ namespace MobileDeliveryManager
 
                     OrderDetailsData odd = (OrderDetailsData)UMDServer.QueryData(cbsend, mreqod);
                     Logger.Info($"API Manager OrderDetailsData QueryData. {odd.ToString()}");
+                    break;
+
+                case eCommand.ScanFile:
+                    Logger.Info($"HandleClientCmd - Get SQL Server ScanFile:{cmd.ToString()}");
+                    manifestRequest mreqsf = (manifestRequest)new manifestRequest().FromArray(bytes_cmd);
+                    ScanFileData sfd = (ScanFileData)UMDServer.QueryData(cbsend, mreqsf);
+                    Logger.Info($"HandleClientCmd - Query SCNFLE Complete: {sfd.ToString()}");
                     break;
 
                 case eCommand.UploadManifest:
@@ -471,7 +590,7 @@ namespace MobileDeliveryManager
                 case eCommand.OrdersLoad:
                     req = new manifestRequest().FromArray(bytes_cmd);
                     Logger.Info($"HandleClientCmd - OrdersLoad (Start QueryData): {req.ToString()}");
-                    OrderData od = (OrderData)UMDServer.QueryData(cbsend, req);
+                    OrderMasterData od = (OrderMasterData)UMDServer.QueryData(cbsend, req);
                     Logger.Info($"OrdersLoad QueryData: {od.ToString()}");
                     break;
                 case eCommand.AccountReceivable:
@@ -487,8 +606,6 @@ namespace MobileDeliveryManager
                     break;
             }
         }
-        public bool SendMessage(isaCommand cmd) {
-            return WinSysSM.SendMessage(cmd);
-        }
     }
 }
+

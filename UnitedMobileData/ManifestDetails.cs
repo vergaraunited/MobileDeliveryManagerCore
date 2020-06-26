@@ -188,19 +188,43 @@ namespace MobileDeliveryManger.UnitedMobileData
                 prevTake += batchCount;
             } 
         }
+        public void GetDrillDownScanFile(ManifestMasterData mmd)
+        {
+            var req = new manifestRequest()
+            {
+                command = eCommand.ScanFile,
+                requestId = mmd.RequestId.ToByteArray(),
+                id = mmd.ManifestId,
+                date = mmd.SHIP_DTE.ToString("yyyy-MM-dd")
+            };
+            sm(req);
+        }
 
-        public void GetDrillDownData(List<long> ids, eCommand cmd, byte[] reqId, int nSplitSize=0)
+        public void GetDrillDownData(List<long> ids, manifestRequest req, int nSplitSize = 0)
         {
             // SpliList limits the number of order ids in the SQL query condition.  Defaults to 30 (_nSize).
-            foreach ( var reqListIds in  ids.SplitList(nSplitSize))
+            foreach (var reqListIds in ids.SplitList(nSplitSize))
             {
                 sm(new manifestRequest()
                 {
-                    command = cmd,
-                    requestId = reqId,
+                    command = req.command,
+                    requestId = req.requestId,
+                    id = req.id,
                     valist = reqListIds
                 });
             }
+        }
+
+        public void GetDrillDownData(List<long> ids, eCommand cmd, byte[] reqId, int nSplitSize=0)
+        {
+            manifestRequest mr = new manifestRequest()
+            {
+                command = cmd,
+                requestId = reqId,
+                valist = ids
+            };
+
+            GetDrillDownData(ids, mr, nSplitSize);
         }
     }
 }
