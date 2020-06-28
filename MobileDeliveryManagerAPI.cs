@@ -39,6 +39,12 @@ namespace MobileDeliveryManager
 
         public void Init(UMDAppConfig config, ev_name_hook ev)
         {
+            UMDServer = new UMDManifest(config.SQLConn);
+            drillDown = new ManifestDetails(sm, rm, pmRx);
+            ConnectToWinsys(config, ev);
+            Console.Title = $"{AppName}";
+        }
+        void ConnectToWinsys(UMDAppConfig config, ev_name_hook e) {
             rm = new ReceiveMsgDelegate(ReceiveMessage);
             pmRx = new ProcessMsgDelegateRXRaw(HandleClientCmd);
             AppName = config.AppName;
@@ -56,15 +62,7 @@ namespace MobileDeliveryManager
             config.srvSet.name += " as a client To WinSys server.";
             conn = new ClientToServerConnection(config.srvSet, ref sm, rm, ev);
             conn.Connect();
-            //AppName = config.AppName + "_" + conn.name;
-
-            UMDServer = new UMDManifest(config.SQLConn);
-            //WinSysSM = new SendMessages(sm);
-            drillDown = new ManifestDetails(sm, rm, pmRx);
-
-            Console.Title = $"{AppName}";
         }
-
         Dictionary<Guid, Func<byte[], Task>> dRetCall = new Dictionary<Guid, Func<byte[], Task>>();
         public isaCommand ReceiveMessage(isaCommand cmd)
         {
